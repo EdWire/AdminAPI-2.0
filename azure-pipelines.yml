@@ -25,7 +25,7 @@ stages:
             displayName: "Build Docker Image"
             inputs:
               command: "build"
-              Dockerfile: "$(Build.SourcesDirectory)/Docker/Dockerfile"
+              Dockerfile: "$(Build.SourcesDirectory)/Docker/edgraph.mssql.Dockerfile"
               buildContext: "$(Build.SourcesDirectory)/Docker"
               # arguments: "--build-arg FEED_ACCESS_TOKEN=$(NUGET_FEED_PAT)"
               repository: "edfi/admin-api-v2"
