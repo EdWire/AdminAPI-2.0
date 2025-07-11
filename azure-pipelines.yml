@@ -1,0 +1,49 @@
+trigger:
+  - EdGraph/v2.2.1-dev
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  - name: buildConfiguration
+    value: "Release"
+  # - group: 'Shared DevOps Variables'
+
+stages:
+  - stage: DockerBuild
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/EdGraph/v2.2.1-dev')
+    jobs:
+      - job: "BuildAndPush"
+        steps:
+          - task: Docker@2
+            displayName: Login to ACR
+            inputs:
+              command: login
+              containerRegistry: "eginfracrdevelopmentusc"
+
+          - task: Docker@2
+            displayName: "Build Docker Image"
+            inputs:
+              command: "build"
+              Dockerfile: "$(Build.SourcesDirectory)/Docker/Dockerfile"
+              buildContext: "$(Build.SourcesDirectory)/Docker"
+              # arguments: "--build-arg FEED_ACCESS_TOKEN=$(NUGET_FEED_PAT)"
+              repository: "edfi/admin-api-v2"
+              tags: |
+                  $(Build.BuildNumber)
+                  latest
+
+          - task: Docker@2
+            displayName: "Push Docker Image"
+            inputs:
+              command: "push"
+              repository: "edfi/admin-api-v2"
+              tags: |
+                  $(Build.BuildNumber)
+                  latest
+
+          - task: Docker@2
+            displayName: Logout of ACR
+            inputs:
+              command: logout
+              containerRegistry: eginfracrdevelopmentusc
