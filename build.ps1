@@ -135,7 +135,12 @@ param(
 
     # Option to run integration tests with no integrated security
     [string]
-    $DbPassword
+    $DbPassword,
+
+    # If not specified, the Docker image for both engines will be built, but the PostgreSQL image will be used by default.
+    [string]
+    [ValidateSet("PgSql", "MsSql")]
+    $DbEngine
 )
 
 $Env:MSBUILDDISABLENODEREUSE = "1"
@@ -470,12 +475,12 @@ function Invoke-IntegrationTestSuite {
 
         Invoke-Step {
             $arguments = @{
-                OdsVersion              = $_.OdsVersion
-                OdsPackageName          = $_.OdsPackageName
-                Prerelease              = $_.Prerelease
-                UseIntegratedSecurity   = $UseIntegratedSecurity
-                DbUsername              = $DbUsername
-                DbPassword              = $DbPassword
+                OdsVersion            = $_.OdsVersion
+                OdsPackageName        = $_.OdsPackageName
+                Prerelease            = $_.Prerelease
+                UseIntegratedSecurity = $UseIntegratedSecurity
+                DbUsername            = $DbUsername
+                DbPassword            = $DbPassword
             }
             ResetTestDatabases @arguments
         }
@@ -538,21 +543,25 @@ function RestartAdminApiContainer {
 function BuildAdminApiDevDockerImage {
     Push-Location $dockerRoot
     try {
-        ">>> Building dev.pgsql.Dockerfile" | Out-Host
-        &docker build `
-            -t adminapi-dev-pgsql `
-            --build-context assets=$(Resolve-Path "..") `
-            --no-cache `
-            -f "dev.pgsql.Dockerfile" `
-            .
+        if ([string]::IsNullOrWhiteSpace($DbEngine) -or $DbEngine -eq "PgSql") {
+            ">>> Building dev.pgsql.Dockerfile" | Out-Host
+            &docker build `
+                -t adminapi-dev-pgsql `
+                --build-context assets=$(Resolve-Path "..") `
+                --no-cache `
+                -f "dev.pgsql.Dockerfile" `
+                .
+        }
 
-        ">>> Building dev.mssql.Dockerfile" | Out-Host
-        &docker build `
-            -t adminapi-dev-mssql `
-            --build-context assets=$(Resolve-Path "..") `
-            --no-cache `
-            -f "dev.mssql.Dockerfile" `
-            .
+        if ([string]::IsNullOrWhiteSpace($DbEngine) -or $DbEngine -eq "MsSql") {
+            ">>> Building dev.mssql.Dockerfile" | Out-Host
+            &docker build `
+                -t adminapi-dev-mssql `
+                --build-context assets=$(Resolve-Path "..") `
+                --no-cache `
+                -f "dev.mssql.Dockerfile" `
+                .
+        }
     }
     finally {
         Pop-Location
@@ -560,7 +569,12 @@ function BuildAdminApiDevDockerImage {
 }
 
 function RunAdminApiDevDockerContainer {
-    &docker run --env-file "$solutionRoot/EdFi.Ods.AdminApi/.env" -p 80:80 -v "$dockerRoot/Settings/ssl:/ssl/" adminapi-dev-pgsql
+    if ($DbEngine -eq "PgSql" -or [string]::IsNullOrWhiteSpace($DbEngine)) {
+        &docker run --env-file "$solutionRoot/EdFi.Ods.AdminApi/.env" -p 80:80 -v "$dockerRoot/Settings/ssl:/ssl/" adminapi-dev-pgsql -d
+    }
+    elseif ($DbEngine -eq "MsSql") {
+        &docker run --env-file "$solutionRoot/EdFi.Ods.AdminApi/.env" -p 80:80 -v "$dockerRoot/Settings/ssl:/ssl/" adminapi-dev-mssql -d
+    }
 }
 
 function RunAdminApiDevDockerCompose {
@@ -630,9 +644,9 @@ Invoke-Main {
         }
         IntegrationTest {
             $arguments = @{
-                UseIntegratedSecurity    = $UseIntegratedSecurity
-                DbUsername               = $DbUsername
-                DbPassword               = $DbPassword
+                UseIntegratedSecurity = $UseIntegratedSecurity
+                DbUsername            = $DbUsername
+                DbPassword            = $DbPassword
             }
 
             Invoke-IntegrationTestSuite @arguments
@@ -643,9 +657,9 @@ Invoke-Main {
         }
         BuildAndTest {
             $arguments = @{
-                UseIntegratedSecurity    = $UseIntegratedSecurity
-                DbUsername               = $DbUsername
-                DbPassword               = $DbPassword
+                UseIntegratedSecurity = $UseIntegratedSecurity
+                DbUsername            = $DbUsername
+                DbPassword            = $DbPassword
             }
 
             Invoke-Build
