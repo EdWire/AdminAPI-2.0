@@ -47,3 +47,48 @@ stages:
             inputs:
               command: logout
               containerRegistry: eginfracrdevelopmentusc
+
+  - stage: GenerateCSharpClient
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/EdGraph/v2.2.1-dev')
+    jobs:
+      - job: "BuildAndPushNugetPackage"
+        steps:
+          - checkout: self
+            # persistCredentials: true # TODO Is this needed?
+          
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet clean"
+            inputs:
+              command: "custom"
+              custom: "clean"
+              arguments: "$(Build.SourcesDirectory)/Application --configuration Release"
+          
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet restore"
+            inputs:
+              command: "restore"
+              projects: "$(Build.SourcesDirectory)/Application"
+          
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet tool restore"
+            inputs:
+              command: "custom"
+              custom: "tool restore"
+              arguments: "--tool-manifest $(Build.SourcesDirectory)/.config/dotnet-tools.json"
+          
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet build"
+            inputs:
+              command: "build"
+              projects: "$(Build.SourcesDirectory)/Application"
+              arguments: "--configuration Release --no-restore"
+          
+          - task: DotNetCoreCLI@2
+            displayName: "dotnet tool run swagger tofile"
+            inputs:
+              command: "custom"
+              custom: "tool run swagger tofile"
+              arguments: "--output $(Build.SourcesDirectory)/tmp/openapi.yml --yaml $(Build.SourcesDirectory)/tmp/EdFi.Ods.AdminApi.dll v2"
+          
+          - script: cat $(Build.SourcesDirectory)/tmp/openapi.yml
+            displayName: "Display OpenAPI YAML"
