@@ -64,8 +64,9 @@ stages:
           - task: UseDotNet@2
             inputs:
               packageType: "sdk"
-              useGlobalJson: true
-              workingDirectory: "$(Build.SourcesDirectory)"
+              version: "8.x"
+              # useGlobalJson: true
+              # workingDirectory: "$(Build.SourcesDirectory)"
           
           - task: DotNetCoreCLI@2
             displayName: "dotnet clean"
