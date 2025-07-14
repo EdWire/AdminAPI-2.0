@@ -59,6 +59,14 @@ stages:
           - checkout: self
             # persistCredentials: true # TODO Is this needed?
           
+          # For more information about UseDotNet@2 see:
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/use-dotnet-v2?view=azure-pipelines
+          - task: UseDotNet@2
+            inputs:
+              packageType: "sdk"
+              useGlobalJson: true
+              workingDirectory: "$(Build.SourcesDirectory)"
+          
           - task: DotNetCoreCLI@2
             displayName: "dotnet clean"
             inputs:
