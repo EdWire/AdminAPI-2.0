@@ -47,11 +47,8 @@ stages:
             inputs:
               command: logout
               containerRegistry: eginfracrdevelopmentusc
-
-  - stage: GenerateCSharpClient
-    condition: eq(variables['build.sourceBranch'], 'refs/heads/EdGraph/v2.2.1-dev')
-    jobs:
-      - job: "BuildAndPushNugetPackage"
+      
+      - job: "PublishApiClientNugetPackage"
         steps:
           - checkout: self
             # persistCredentials: true # TODO Is this needed?
@@ -61,7 +58,7 @@ stages:
             inputs:
               command: "custom"
               custom: "clean"
-              arguments: "$(Build.SourcesDirectory)/Application --configuration Release"
+              arguments: "$(Build.SourcesDirectory)/Application --configuration Release --nologo --verbosity minimal"
           
           - task: DotNetCoreCLI@2
             displayName: "dotnet restore"
