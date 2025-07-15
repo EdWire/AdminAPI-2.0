@@ -11,7 +11,7 @@ variables:
   - name: RunBuildAndPush
     value: "false" # TODO Enable this when ready to build and push Docker image
   - name: RunPublishApiClientNugetPackage
-    value: "true"
+    value: "false"
 
 stages:
   - stage: DockerBuild
