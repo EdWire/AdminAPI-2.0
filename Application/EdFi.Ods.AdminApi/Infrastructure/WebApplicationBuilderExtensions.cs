@@ -212,6 +212,8 @@ public static class WebApplicationBuilderExtensions
         webApplicationBuilder.Services.AddHttpClient();
         webApplicationBuilder.Services.AddTransient<ISimpleGetRequest, SimpleGetRequest>();
         webApplicationBuilder.Services.AddTransient<IOdsApiValidator, OdsApiValidator>();
+
+        webApplicationBuilder.AddAzureAppConfiguration();
     }
 
     private static void EnableMultiTenancySupport(this WebApplicationBuilder webApplicationBuilder)
@@ -440,6 +442,30 @@ public static class WebApplicationBuilderExtensions
                 });
             }
         });
+    }
+
+    private static void AddAzureAppConfiguration(this WebApplicationBuilder builder)
+    {
+        IConfigurationSection config = builder.Configuration.GetSection("AzureAppConfiguration");
+
+        bool enabled = bool.TryParse(config["Enabled"], out bool enabledValue) && enabledValue;
+
+        if (enabled)
+        {
+            builder.Configuration.AddAzureAppConfiguration(options =>
+            {
+                string connectionString = config.GetRequiredSection("ConnectionString").Value!;
+                options.Connect(connectionString);
+
+                string? keyFilter = config.GetSection("KeyFilter").Value;
+                if (!string.IsNullOrWhiteSpace(keyFilter))
+                    options.Select(keyFilter);
+
+                string? sentinelKey = config.GetSection("SentinelKey").Value;
+                if (!string.IsNullOrWhiteSpace(sentinelKey))
+                    options.ConfigureRefresh(refresh => refresh.Register(sentinelKey, refreshAll: true));
+            });
+        }
     }
 
     private enum HttpVerbOrder
