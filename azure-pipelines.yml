@@ -109,12 +109,8 @@ stages:
               projects: "$(Build.SourcesDirectory)/Application"
               arguments: "--configuration Release --no-restore"
           
-          - task: DotNetCoreCLI@2
+          - script: dotnet tool run swagger tofile --output $(Build.SourcesDirectory)/tmp/openapi.yml --yaml $(Build.SourcesDirectory)/tmp/EdFi.Ods.AdminApi.dll v2
             displayName: "dotnet tool run swagger tofile"
-            inputs:
-              command: "custom"
-              custom: "tool run swagger tofile"
-              arguments: "--output $(Build.SourcesDirectory)/tmp/openapi.yml --yaml $(Build.SourcesDirectory)/tmp/EdFi.Ods.AdminApi.dll v2"
           
           - script: cat $(Build.SourcesDirectory)/tmp/openapi.yml
             displayName: "Display OpenAPI YAML"
