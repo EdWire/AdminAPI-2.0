@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Admin API Documentation
   description: 'The Ed-Fi Admin API is a REST API-based administrative interface for managing vendors, applications, client credentials, and authorization rules for accessing an Ed-Fi API.'
-  version: 2.2.1
+  version: v2
 paths:
   /v2/resourceClaims:
     get:
@@ -99,6 +99,122 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resourceClaimModel'
+  /v2/resourceClaimActions:
+    get:
+      tags:
+        - ResourceClaimActions
+      summary: Retrieves all resourceClaimActions.
+      description: This GET operation provides access to resources using the "Get" search pattern. The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
+      parameters:
+        - name: offset
+          in: query
+          description: Indicates how many items should be skipped before returning results.
+          schema:
+            type: integer
+            format: int32
+            default: '0'
+        - name: limit
+          in: query
+          description: Indicates the maximum number of items that should be returned in the results.
+          schema:
+            type: integer
+            format: int32
+            default: '25'
+        - name: orderBy
+          in: query
+          description: Indicates the property name by which the results will be sorted.
+          schema:
+            type: string
+            default: ''
+        - name: direction
+          in: query
+          description: Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).
+          schema:
+            title: Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).
+            enum:
+              - Ascending
+              - Descending
+            type: string
+            default: Descending
+        - name: resourceName
+          in: query
+          schema:
+            type: string
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/resourceClaimActionModel'
+  /v2/resourceClaimActionAuthStrategies:
+    get:
+      tags:
+        - ResourceClaimActionAuthStrategies
+      summary: Retrieves all resourceClaimActionAuthStrategies.
+      description: This GET operation provides access to resources using the "Get" search pattern. The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
+      parameters:
+        - name: offset
+          in: query
+          description: Indicates how many items should be skipped before returning results.
+          schema:
+            type: integer
+            format: int32
+            default: '0'
+        - name: limit
+          in: query
+          description: Indicates the maximum number of items that should be returned in the results.
+          schema:
+            type: integer
+            format: int32
+            default: '25'
+        - name: orderBy
+          in: query
+          description: Indicates the property name by which the results will be sorted.
+          schema:
+            type: string
+            default: ''
+        - name: direction
+          in: query
+          description: Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).
+          schema:
+            title: Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).
+            enum:
+              - Ascending
+              - Descending
+            type: string
+            default: Descending
+        - name: resourceName
+          in: query
+          schema:
+            type: string
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/resourceClaimActionAuthStrategyModel'
   /v2/vendors:
     get:
       tags:
@@ -1294,6 +1410,10 @@ paths:
           description: Claim set name
           schema:
             type: string
+        - name: ids
+          in: query
+          schema:
+            type: string
       responses:
         '401':
           description: Unauthorized. The request requires authentication
@@ -1775,16 +1895,16 @@ paths:
               type: object
               properties:
                 client_id:
-                  type: 'string'
+                  type: 'string '
                 client_secret:
-                  type: 'string'
+                  type: 'string '
                 grant_type:
-                  type: 'string'
+                  type: 'string '
                 scope:
                   type: string
       responses:
         '400':
-          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+          description: 'Bad request, such as invalid scope.'
         '500':
           description: Internal server error. An unhandled error occurred on the server. See the response body for details.
         '200':
@@ -1892,6 +2012,13 @@ paths:
                 $ref: '#/components/schemas/applicationResult'
 components:
   schemas:
+    actionForResourceClaimModel:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
     actionModel:
       title: Action
       type: object
@@ -1904,6 +2031,21 @@ components:
           nullable: true
         uri:
           type: string
+          nullable: true
+      additionalProperties: false
+    actionWithAuthorizationStrategy:
+      type: object
+      properties:
+        actionId:
+          type: integer
+          format: int32
+        actionName:
+          type: string
+          nullable: true
+        authorizationStrategies:
+          type: array
+          items:
+            $ref: '#/components/schemas/authorizationStrategyModelForAction'
           nullable: true
       additionalProperties: false
     addApplicationRequest:
@@ -1939,6 +2081,10 @@ components:
             type: integer
             format: int32
           description: List of ODS instance id
+        enabled:
+          type: boolean
+          description: Indicates whether the ApiClient's credetials is enabled. Defaults to true if not provided.
+          nullable: true
       additionalProperties: false
     addClaimSetRequest:
       title: AddClaimSetRequest
@@ -2004,7 +2150,7 @@ components:
           type: string
           description: Profile definition
       additionalProperties: false
-      example: "{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+      example: "{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
     addResourceClaimOnClaimSetRequest:
       title: AddResourceClaimActionsOnClaimSetRequest
       type: object
@@ -2038,17 +2184,6 @@ components:
     adminApiError:
       title: AdminApiError
       type: object
-      properties:
-        title:
-          type: string
-          nullable: true
-          readOnly: true
-        errors:
-          type: array
-          items:
-            type: string
-          nullable: true
-          readOnly: true
       additionalProperties: false
       description: Wrapper schema for all error responses
     applicationModel:
@@ -2086,6 +2221,8 @@ components:
             type: integer
             format: int32
           nullable: true
+        enabled:
+          type: boolean
       additionalProperties: false
     applicationResult:
       title: ApplicationKeySecret
@@ -2125,6 +2262,16 @@ components:
           type: string
           nullable: true
         displayName:
+          type: string
+          nullable: true
+      additionalProperties: false
+    authorizationStrategyModelForAction:
+      type: object
+      properties:
+        authStrategyId:
+          type: integer
+          format: int32
+        authStrategyName:
           type: string
           nullable: true
       additionalProperties: false
@@ -2269,6 +2416,10 @@ components:
             type: integer
             format: int32
           description: List of ODS instance id
+        enabled:
+          type: boolean
+          description: Indicates whether the ApiClient's credetials is enabled. Defaults to true if not provided.
+          nullable: true
       additionalProperties: false
     editClaimSetRequest:
       title: EditClaimSetRequest
@@ -2335,7 +2486,7 @@ components:
           type: string
           description: Profile definition
       additionalProperties: false
-      example: "{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+      example: "{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
     editResourceClaimOnClaimSetRequest:
       title: EditResourceClaimActionsOnClaimSetRequest
       type: object
@@ -2520,6 +2671,42 @@ components:
         enabled:
           type: boolean
       additionalProperties: false
+    resourceClaimActionAuthStrategyModel:
+      type: object
+      properties:
+        resourceClaimId:
+          type: integer
+          format: int32
+        resourceName:
+          type: string
+          nullable: true
+        claimName:
+          type: string
+          nullable: true
+        authorizationStrategiesForActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/actionWithAuthorizationStrategy'
+          nullable: true
+      additionalProperties: false
+    resourceClaimActionModel:
+      type: object
+      properties:
+        resourceClaimId:
+          type: integer
+          format: int32
+        resourceName:
+          type: string
+          nullable: true
+        claimName:
+          type: string
+          nullable: true
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/actionForResourceClaimModel'
+          nullable: true
+      additionalProperties: false
     resourceClaimModel:
       title: ResourceClaimModel
       type: object
@@ -2578,9 +2765,11 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: http://localhost/connect/token
+          tokenUrl: https://localhost:7214/connect/token
           scopes:
-            edfi_admin_api/full_access: Unrestricted access to all Admin API endpoints
+            edfi_admin_api/full_access: Full access to the Admin API
+            edfi_admin_api/tenant_access: Access to a specific tenant
+            edfi_admin_api/worker: Worker access to the Admin API
 security:
   - oauth:
       - api
