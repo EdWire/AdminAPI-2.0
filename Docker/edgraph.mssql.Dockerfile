@@ -68,3 +68,5 @@ EXPOSE ${ASPNETCORE_HTTP_PORTS}
 USER edfi
 
 ENTRYPOINT ["dotnet", "EdFi.Ods.AdminApi.dll"]
+
+# test azure pipeline
