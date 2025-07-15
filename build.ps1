@@ -233,32 +233,57 @@ function GenerateOpenAPI {
 }
 
 function GenerateOpenAPIClient {
-    Invoke-Execute {
-        # https://openapi-generator.tech/docs/usage#generate
-        # https://openapi-generator.tech/docs/configuration/
-        # https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/csharp.md
+    Invoke-Step { GenerateOpenAPIClientForDotNet6 }
+    Invoke-Step { GenerateOpenAPIClientForDotNet8 }
+}
 
-        $ApiSpec = "admin-api-$APIVersion.yaml"
+function GenerateOpenAPIClientForDotNet6 {
+    Invoke-Execute {
+        # https://github.com/OpenAPITools/openapi-generator/blob/v6.6.0/docs/generators/csharp-netcore.md
+        openapi-generator-cli version-manager set 6.6.0
 
         $AdditionalProperties = (
             @{
-                "apiName"         = "EdFiOdsAdminApiClient"
-                "library"         = "generichost"
-
-                # NOTE: There are several known issues with nullable reference types
-                # See: https://github.com/OpenAPITools/openapi-generator/issues?q=nullable%20reference%20types%20state%3Aopen
-                # "nullableReferenceTypes" = "true"
-
-                "packageName"     = "EdFi.Ods.AdminApi.Client"
-                "packageVersion"  = $APIVersion
-                "targetFramework" = "netstandard2.1"
+                "apiName"                = "EdFiOdsAdminApiV2Client"
+                "library"                = "generichost"
+                "nullableReferenceTypes" = "true"
+                "packageName"            = "EdFi.Ods.AdminApi.V2.Client"
+                "packageVersion"         = "6.0.0"
+                "targetFramework"        = "net6.0"
             }.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
         ) -join ","
-        
+
+        openapi-generator-cli generate `
+            --generator-name "csharp-netcore" `
+            --input-spec "./docs/api-specifications/openapi-yaml/admin-api-$APIVersion.yaml" `
+            --output "./Client/admin-api-$APIVersion/net6.0" `
+            --remove-operation-id-prefix `
+            --global-property "apiTests=false" `
+            --global-property "modelTests=false" `
+            --additional-properties=$AdditionalProperties
+    }
+}
+
+function GenerateOpenAPIClientForDotNet8 {
+    Invoke-Execute {
+        # https://github.com/OpenAPITools/openapi-generator/blob/v7.14.0/docs/generators/csharp.md
+        openapi-generator-cli version-manager set 7.14.0
+
+        $AdditionalProperties = (
+            @{
+                "apiName"                = "EdFiOdsAdminApiV2Client"
+                "library"                = "generichost"
+                "nullableReferenceTypes" = "true"
+                "packageName"            = "EdFi.Ods.AdminApi.V2.Client"
+                "packageVersion"         = "8.0.0"
+                "targetFramework"        = "net8.0"
+            }.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
+        ) -join ","
+
         openapi-generator-cli generate `
             --generator-name "csharp" `
-            --input-spec "./docs/api-specifications/openapi-yaml/$ApiSpec" `
-            --output "./Client/admin-api-$APIVersion" `
+            --input-spec "./docs/api-specifications/openapi-yaml/admin-api-$APIVersion.yaml" `
+            --output "./Client/admin-api-$APIVersion/net8.0" `
             --remove-operation-id-prefix `
             --global-property "apiTests=false" `
             --global-property "modelTests=false" `
