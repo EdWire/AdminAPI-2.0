@@ -109,7 +109,7 @@ stages:
               projects: "$(Build.SourcesDirectory)/Application"
               arguments: "--configuration Release --no-restore"
           
-          - script: dotnet tool run swagger tofile --output $(Build.SourcesDirectory)/tmp/openapi.yml --yaml $(Build.SourcesDirectory)/tmp/EdFi.Ods.AdminApi.dll v2
+          - script: dotnet tool run swagger tofile --output $(Build.SourcesDirectory)/tmp/openapi.yml --yaml $(Build.SourcesDirectory)/Application/EdFi.Ods.AdminApi/bin/Release/net8.0/EdFi.Ods.AdminApi.dll v2
             displayName: "dotnet tool run swagger tofile"
           
           - script: cat $(Build.SourcesDirectory)/tmp/openapi.yml
