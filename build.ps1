@@ -242,12 +242,16 @@ function GenerateOpenAPIClient {
 
         $AdditionalProperties = (
             @{
-                "apiName"                = "EdFiOdsAdminApiClient"
-                "library"                = "generichost"
-                "nullableReferenceTypes" = "true"
-                "packageName"            = "EdFi.Ods.AdminApi.Client"
-                "packageVersion"         = $APIVersion
-                "targetFramework"        = "netstandard2.1"
+                "apiName"         = "EdFiOdsAdminApiClient"
+                "library"         = "generichost"
+
+                # NOTE: There are several known issues with nullable reference types
+                # See: https://github.com/OpenAPITools/openapi-generator/issues?q=nullable%20reference%20types%20state%3Aopen
+                # "nullableReferenceTypes" = "true"
+
+                "packageName"     = "EdFi.Ods.AdminApi.Client"
+                "packageVersion"  = $APIVersion
+                "targetFramework" = "netstandard2.1"
             }.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
         ) -join ","
         
