@@ -87,7 +87,7 @@ stages:
           - script: cat $(Build.SourcesDirectory)/Application/NuGet.Config
             displayName: "Display NuGet.Config"
 
-          - task: dotnet restore $(Build.SourcesDirectory)/Application
+          - script: dotnet restore $(Build.SourcesDirectory)/Application
             displayName: "dotnet restore"
             # inputs:
             #   command: "restore"
