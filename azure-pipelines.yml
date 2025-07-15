@@ -80,21 +80,24 @@ stages:
           
           - script: echo $(Build.SourcesDirectory)
             displayName: "Display Build Sources Directory"
+
+          - script: ls -la $(Build.SourcesDirectory)
+            displayName: "List Build Sources Directory"
           
           - script: cat $(Build.SourcesDirectory)/Application/NuGet.Config
             displayName: "Display NuGet.Config"
 
-          - task: DotNetCoreCLI@2
+          - task: dotnet restore $(Build.SourcesDirectory)/Application
             displayName: "dotnet restore"
-            inputs:
-              command: "restore"
-              projects: "$(Build.SourcesDirectory)/Application"
-              # Feeds and authentication
-              feedsToUse: "select" # 'select' | 'config'. Alias: selectOrConfig. Required when command = restore. Feeds to use. Default: select.
-              #vstsFeed: # string. Alias: feedRestore. Optional. Use when selectOrConfig = select && command = restore. Use packages from this Azure Artifacts feed. Select from the dropdown or enter [project name/]feed name.
-              includeNuGetOrg: true # boolean. Optional. Use when selectOrConfig = select && command = restore. Use packages from NuGet.org. Default: true.
-              nugetConfigPath: "$(Build.SourcesDirectory)/Application/NuGet.Config" # string. Optional. Use when selectOrConfig = config && command = restore. Path to NuGet.config. 
-              #externalFeedCredentials: # string. Alias: externalEndpoints. Optional. Use when selectOrConfig = config && command = restore. Credentials for feeds outside this organization/collection.
+            # inputs:
+            #   command: "restore"
+            #   projects: "$(Build.SourcesDirectory)/Application"
+            #   # Feeds and authentication
+            #   feedsToUse: "select" # 'select' | 'config'. Alias: selectOrConfig. Required when command = restore. Feeds to use. Default: select.
+            #   #vstsFeed: # string. Alias: feedRestore. Optional. Use when selectOrConfig = select && command = restore. Use packages from this Azure Artifacts feed. Select from the dropdown or enter [project name/]feed name.
+            #   includeNuGetOrg: true # boolean. Optional. Use when selectOrConfig = select && command = restore. Use packages from NuGet.org. Default: true.
+            #   nugetConfigPath: "$(Build.SourcesDirectory)/Application/NuGet.Config" # string. Optional. Use when selectOrConfig = config && command = restore. Path to NuGet.config. 
+            #   #externalFeedCredentials: # string. Alias: externalEndpoints. Optional. Use when selectOrConfig = config && command = restore. Credentials for feeds outside this organization/collection.
           
           - task: DotNetCoreCLI@2
             displayName: "dotnet tool restore"
