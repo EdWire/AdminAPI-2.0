@@ -75,6 +75,15 @@ stages:
               custom: "clean"
               arguments: "$(Build.SourcesDirectory)/Application --configuration Release --nologo --verbosity minimal"
           
+          - script: dotnet --version
+            displayName: "Display .NET Version"
+          
+          - script: echo $(Build.SourcesDirectory)
+            displayName: "Display Build Sources Directory"
+          
+          - script: cat $(Build.SourcesDirectory)/Application/NuGet.Config
+            displayName: "Display NuGet.Config"
+
           - task: DotNetCoreCLI@2
             displayName: "dotnet restore"
             inputs:
