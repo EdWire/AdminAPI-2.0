@@ -99,12 +99,8 @@ stages:
             #   nugetConfigPath: "$(Build.SourcesDirectory)/Application/NuGet.Config" # string. Optional. Use when selectOrConfig = config && command = restore. Path to NuGet.config. 
             #   #externalFeedCredentials: # string. Alias: externalEndpoints. Optional. Use when selectOrConfig = config && command = restore. Credentials for feeds outside this organization/collection.
           
-          - task: DotNetCoreCLI@2
+          - script: dotnet tool restore --tool-manifest $(Build.SourcesDirectory)/.config/dotnet-tools.json
             displayName: "dotnet tool restore"
-            inputs:
-              command: "custom"
-              custom: "tool restore"
-              arguments: "--tool-manifest $(Build.SourcesDirectory)/.config/dotnet-tools.json"
           
           - task: DotNetCoreCLI@2
             displayName: "dotnet build"
