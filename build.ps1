@@ -177,7 +177,18 @@ function InitializeNuGet {
 }
 
 function Restore {
-    Invoke-Execute { dotnet restore $solutionRoot }
+    Invoke-Execute {
+        Write-Output "Resorting .NET solution at $solutionRoot"
+        dotnet restore $solutionRoot
+    }
+}
+
+function RestoreTools {
+    Invoke-Execute {
+        $dotNetToolManifestPath = "$PSScriptRoot/.config/dotnet-tools.json"
+        Write-Output "Restoring .NET tools from manifest at $dotNetToolManifestPath"
+        dotnet tool restore --tool-manifest $dotNetToolManifestPath
+    }
 }
 
 function SetAdminApiAssemblyInfo {
@@ -218,6 +229,36 @@ function GenerateOpenAPI {
         finally {
             Pop-Location
         }
+    }
+}
+
+function GenerateOpenAPIClient {
+    Invoke-Execute {
+        # https://openapi-generator.tech/docs/usage#generate
+        # https://openapi-generator.tech/docs/configuration/
+        # https://github.com/OpenAPITools/openapi-generator/blob/master/docs/generators/csharp.md
+
+        $ApiSpec = "admin-api-$APIVersion.yaml"
+
+        $AdditionalProperties = (
+            @{
+                "apiName"                = "EdFiOdsAdminApiClient"
+                "library"                = "generichost"
+                "nullableReferenceTypes" = "true"
+                "packageName"            = "EdFi.Ods.AdminApi.Client"
+                "packageVersion"         = $APIVersion
+                "targetFramework"        = "netstandard2.1"
+            }.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
+        ) -join ","
+        
+        openapi-generator-cli generate `
+            --generator-name "csharp" `
+            --input-spec "./docs/api-specifications/openapi-yaml/$ApiSpec" `
+            --output "./Client/admin-api-$APIVersion" `
+            --remove-operation-id-prefix `
+            --global-property "apiTests=false" `
+            --global-property "modelTests=false" `
+            --additional-properties=$AdditionalProperties
     }
 }
 
@@ -414,8 +455,10 @@ function Invoke-GenerateOpenAPIAndMD {
     Invoke-Step { UpdateAppSettingsForAdminApi }
     Invoke-Step { DotNetClean }
     Invoke-Step { Restore }
+    Invoke-Step { RestoreTools }
     Invoke-Step { Compile }
     Invoke-Step { GenerateOpenAPI }
+    Invoke-Step { GenerateOpenAPIClient }
     Invoke-Step { GenerateOpenAPIAdminConsole }
     Invoke-Step { GenerateDocumentation }
     Invoke-Step { GenerateDocumentationAdminConsole }
