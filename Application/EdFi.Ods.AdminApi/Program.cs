@@ -27,7 +27,16 @@ builder.AddServices();
 if (adminConsoleIsEnabled)
     builder.RegisterAdminConsoleDependencies();
 
+IConfigurationSection azureAppConfigurationSection = builder.Configuration.GetSection("AzureAppConfiguration");
+bool.TryParse(azureAppConfigurationSection["Enabled"], out bool isAzureAppConfigurationEnabled);
+
+if (isAzureAppConfigurationEnabled)
+    builder.AddAzureAppConfiguration(azureAppConfigurationSection);
+
 var app = builder.Build();
+
+if (isAzureAppConfigurationEnabled)
+    app.UseAzureAppConfiguration();
 
 //Order is important to enable CORS
 if (adminConsoleIsEnabled)
