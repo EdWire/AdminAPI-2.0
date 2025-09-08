@@ -1,0 +1,694 @@
+openapi: 3.0.1
+info:
+  title: Admin API Documentation
+  description: 'The Ed-Fi Admin API is a REST API-based administrative interface for managing vendors, applications, client credentials, and authorization rules for accessing an Ed-Fi API.'
+  version: adminconsole
+paths:
+  /:
+    get:
+      tags:
+        - Information
+      summary: Retrieve API informational metadata
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/informationResult'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/informationResult'
+  /adminconsole/instances:
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: tenantName
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+  '/adminconsole/instances/{id}':
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/instanceModel'
+  /adminconsole/tenants:
+    get:
+      tags:
+        - Adminconsole
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+  '/adminconsole/tenants/{tenantId}':
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+  /adminconsole/odsInstances:
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+    post:
+      tags:
+        - Adminconsole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addInstanceRequest'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '201':
+          description: Created
+  '/adminconsole/odsInstances/{id}':
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/instanceModel'
+    put:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/editInstanceRequest'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+    delete:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '202':
+          description: Accepted
+  /adminconsole/healthcheck:
+    get:
+      tags:
+        - Adminconsole
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+    post:
+      tags:
+        - Adminconsole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addHealthCheckRequest'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '201':
+          description: Created
+  '/adminconsole/healthcheck/{instanceId}':
+    get:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: instanceId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+  /connect/register:
+    post:
+      tags:
+        - Connect
+      summary: Registers new client
+      description: Registers new client
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                ClientId:
+                  type: string
+                  description: Client id
+                ClientSecret:
+                  type: string
+                  description: Client secret
+                DisplayName:
+                  type: string
+                  description: Client display name
+            encoding:
+              ClientId:
+                style: form
+              ClientSecret:
+                style: form
+              DisplayName:
+                style: form
+      responses:
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '200':
+          description: Application registered successfully.
+  /connect/token:
+    post:
+      tags:
+        - Connect
+      summary: Retrieves bearer token
+      description: "\nTo authenticate Swagger requests, execute using \"Authorize\" above, not \"Try It Out\" here."
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                client_id:
+                  type: 'string '
+                client_secret:
+                  type: 'string '
+                grant_type:
+                  type: 'string '
+                scope:
+                  type: string
+      responses:
+        '400':
+          description: 'Bad request, such as invalid scope.'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '200':
+          description: Sign-in successful.
+  '/adminconsole/instances/{id}/deleted':
+    post:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+  '/adminconsole/instances/{id}/deletefailed':
+    post:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+  '/adminconsole/instances/{instanceid}/renamed':
+    post:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: instanceid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/completeInstanceRequest'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+  '/adminconsole/instances/{id}/renameFailed':
+    post:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+  '/adminconsole/instances/{instanceid}/completed':
+    post:
+      tags:
+        - Adminconsole
+      parameters:
+        - name: instanceid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/completeInstanceRequest'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized. The request requires authentication
+        '403':
+          description: 'Forbidden. The request is authenticated, but not authorized to access this resource'
+        '409':
+          description: 'Conflict. The request is authenticated, but it has a conflict with an existing element'
+        '500':
+          description: Internal server error. An unhandled error occurred on the server. See the response body for details.
+        '404':
+          description: Not found. A resource with given identifier could not be found.
+        '400':
+          description: Bad Request. The request was invalid and cannot be completed. See the response body for details.
+        '204':
+          description: No Content
+components:
+  schemas:
+    addHealthCheckRequest:
+      title: AddHealthCheckRequest
+      type: object
+      properties:
+        docId:
+          type: integer
+          format: int32
+        instanceId:
+          type: integer
+          format: int32
+        edOrgId:
+          type: integer
+          format: int32
+        tenantId:
+          type: integer
+          format: int32
+        document:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    addInstanceRequest:
+      type: object
+      properties:
+        tenantId:
+          type: integer
+          format: int32
+        tenantName:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        instanceType:
+          type: string
+          nullable: true
+        odsInstanceContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceContextModel'
+          nullable: true
+        odsInstanceDerivatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceDerivativeModel'
+          nullable: true
+      additionalProperties: false
+    adminApiError:
+      title: AdminApiError
+      type: object
+      additionalProperties: false
+      description: Wrapper schema for all error responses
+    completeInstanceRequest:
+      type: object
+      properties:
+        connectionString:
+          type: string
+          nullable: true
+      additionalProperties: false
+    editInstanceRequest:
+      type: object
+      properties:
+        tenantId:
+          type: integer
+          format: int32
+        tenantName:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        instanceType:
+          type: string
+          nullable: true
+        odsInstanceContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceContextModel'
+          nullable: true
+        odsInstanceDerivatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceDerivativeModel'
+          nullable: true
+      additionalProperties: false
+    informationResult:
+      title: Information
+      type: object
+      properties:
+        version:
+          type: string
+          description: Application version
+        build:
+          type: string
+          description: Build / release version
+      additionalProperties: false
+    instanceModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        tenantId:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        instanceType:
+          type: string
+          nullable: true
+        status:
+          type: string
+          nullable: true
+        baseUrl:
+          type: string
+          nullable: true
+        odsInstanceContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceContextForInstanceModel'
+          nullable: true
+        odsInstanceDerivatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/odsInstanceDerivativeForInstanceModel'
+          nullable: true
+      additionalProperties: false
+    odsInstanceContextForInstanceModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        instanceId:
+          type: integer
+          format: int32
+        contextKey:
+          type: string
+          nullable: true
+        contextValue:
+          type: string
+          nullable: true
+      additionalProperties: false
+    odsInstanceContextModel:
+      type: object
+      properties:
+        contextKey:
+          type: string
+          nullable: true
+        contextValue:
+          type: string
+          nullable: true
+      additionalProperties: false
+    odsInstanceDerivativeForInstanceModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        instanceId:
+          type: integer
+          format: int32
+        derivativeType:
+          type: string
+          nullable: true
+      additionalProperties: false
+    odsInstanceDerivativeModel:
+      type: object
+      properties:
+        derivativeType:
+          type: string
+          nullable: true
+      additionalProperties: false
+    registerClientRequest:
+      title: RegisterClientRequest
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: Client id
+        clientSecret:
+          type: string
+          description: Client secret
+        displayName:
+          type: string
+          description: Client display name
+      additionalProperties: false
+  securitySchemes:
+    oauth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://localhost:7214/connect/token
+          scopes:
+            edfi_admin_api/full_access: Full access to the Admin API
+            edfi_admin_api/tenant_access: Access to a specific tenant
+            edfi_admin_api/worker: Worker access to the Admin API
+security:
+  - oauth:
+      - api

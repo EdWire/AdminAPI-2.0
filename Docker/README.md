@@ -9,7 +9,7 @@
     It utilizes the assets and dlls from "Docker\Application\EdFi.Ods.AdminApi"
     folder.
 
-2. `dev.pgsql.Dockerfile`
+2. `dev.mssql.Dockerfile`
 
     The purpose of this file is to facilitate the setup of Admin API docker image in
     the development environment, allowing for local testing with latest changes using MSSQL.
@@ -18,9 +18,15 @@
 
 3. `db.pgsql.admin.Dockerfile`
 
-    Purpose of this file to setup the EdFi_Admin database image which includes Admin
+    The purpose of this file to setup the EdFi_Admin database image which includes Admin
     API specific tables. It utilizes database artifacts located at
     "Docker\Application\EdFi.Ods.AdminApi\Artifacts\PgSql\Structure\Admin".
+
+4. `db.mssql.admin.Dockerfile`
+
+    The purpose of this file to setup the EdFi_Admin database image which includes Admin
+    API specific tables. It utilizes database artifacts located at
+    "Docker\Application\EdFi.Ods.AdminApi\Artifacts\MsSql\Structure\Admin".
 
 ## Non-development environments
 
