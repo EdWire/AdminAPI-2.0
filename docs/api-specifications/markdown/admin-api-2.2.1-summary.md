@@ -1,6 +1,6 @@
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="admin-api-documentation">Admin API Documentation v2.2.1</h1>
+<h1 id="admin-api-documentation">Admin API Documentation v2</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
@@ -12,11 +12,13 @@ The Ed-Fi Admin API is a REST API-based administrative interface for managing ve
 
     - Flow: clientCredentials
 
-    - Token URL = [http://localhost/connect/token](http://localhost/connect/token)
+    - Token URL = [https://localhost:7214/connect/token](https://localhost:7214/connect/token)
 
 |Scope|Scope Description|
 |---|---|
-|edfi_admin_api/full_access|Unrestricted access to all Admin API endpoints|
+|edfi_admin_api/full_access|Full access to the Admin API|
+|edfi_admin_api/tenant_access|Access to a specific tenant|
+|edfi_admin_api/worker|Worker access to the Admin API|
 
 <h1 id="admin-api-documentation-resourceclaims">ResourceClaims</h1>
 
@@ -136,6 +138,161 @@ This GET operation provides access to resources using the "Get" search pattern. 
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. A resource with given identifier could not be found.|None|
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. The request is authenticated, but it has a conflict with an existing element|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. An unhandled error occurred on the server. See the response body for details.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+oauth ( Scopes: api )
+</aside>
+
+<h1 id="admin-api-documentation-resourceclaimactions">ResourceClaimActions</h1>
+
+## Retrieves all resourceClaimActions.
+
+`GET /v2/resourceClaimActions`
+
+This GET operation provides access to resources using the "Get" search pattern. The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
+
+<h3 id="retrieves-all-resourceclaimactions.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|offset|query|integer(int32)|false|Indicates how many items should be skipped before returning results.|
+|limit|query|integer(int32)|false|Indicates the maximum number of items that should be returned in the results.|
+|orderBy|query|string|false|Indicates the property name by which the results will be sorted.|
+|direction|query|string|false|Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).|
+|resourceName|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|direction|Ascending|
+|direction|Descending|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  {
+    "resourceClaimId": 0,
+    "resourceName": "string",
+    "claimName": "string",
+    "actions": [
+      {
+        "name": "string"
+      }
+    ]
+  }
+]
+```
+
+<h3 id="retrieves-all-resourceclaimactions.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized. The request requires authentication|None|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden. The request is authenticated, but not authorized to access this resource|None|
+|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. The request is authenticated, but it has a conflict with an existing element|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. An unhandled error occurred on the server. See the response body for details.|None|
+
+<h3 id="retrieves-all-resourceclaimactions.-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[[resourceClaimActionModel](#schemaresourceclaimactionmodel)]|false|none|none|
+|» resourceClaimId|integer(int32)|false|none|none|
+|» resourceName|string¦null|false|none|none|
+|» claimName|string¦null|false|none|none|
+|» actions|[[actionForResourceClaimModel](#schemaactionforresourceclaimmodel)]¦null|false|none|none|
+|»» name|string¦null|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+oauth ( Scopes: api )
+</aside>
+
+<h1 id="admin-api-documentation-resourceclaimactionauthstrategies">ResourceClaimActionAuthStrategies</h1>
+
+## Retrieves all resourceClaimActionAuthStrategies.
+
+`GET /v2/resourceClaimActionAuthStrategies`
+
+This GET operation provides access to resources using the "Get" search pattern. The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
+
+<h3 id="retrieves-all-resourceclaimactionauthstrategies.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|offset|query|integer(int32)|false|Indicates how many items should be skipped before returning results.|
+|limit|query|integer(int32)|false|Indicates the maximum number of items that should be returned in the results.|
+|orderBy|query|string|false|Indicates the property name by which the results will be sorted.|
+|direction|query|string|false|Indicates whether the result should be sorted in descending order (DESC) or ascending order (ASC).|
+|resourceName|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|direction|Ascending|
+|direction|Descending|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  {
+    "resourceClaimId": 0,
+    "resourceName": "string",
+    "claimName": "string",
+    "authorizationStrategiesForActions": [
+      {
+        "actionId": 0,
+        "actionName": "string",
+        "authorizationStrategies": [
+          {
+            "authStrategyId": 0,
+            "authStrategyName": "string"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+<h3 id="retrieves-all-resourceclaimactionauthstrategies.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized. The request requires authentication|None|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden. The request is authenticated, but not authorized to access this resource|None|
+|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. The request is authenticated, but it has a conflict with an existing element|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. An unhandled error occurred on the server. See the response body for details.|None|
+
+<h3 id="retrieves-all-resourceclaimactionauthstrategies.-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|[[resourceClaimActionAuthStrategyModel](#schemaresourceclaimactionauthstrategymodel)]|false|none|none|
+|» resourceClaimId|integer(int32)|false|none|none|
+|» resourceName|string¦null|false|none|none|
+|» claimName|string¦null|false|none|none|
+|» authorizationStrategiesForActions|[[actionWithAuthorizationStrategy](#schemaactionwithauthorizationstrategy)]¦null|false|none|none|
+|»» actionId|integer(int32)|false|none|none|
+|»» actionName|string¦null|false|none|none|
+|»» authorizationStrategies|[[authorizationStrategyModelForAction](#schemaauthorizationstrategymodelforaction)]¦null|false|none|none|
+|»»» authStrategyId|integer(int32)|false|none|none|
+|»»» authStrategyName|string¦null|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -395,7 +552,8 @@ oauth ( Scopes: api )
     ],
     "odsInstanceIds": [
       0
-    ]
+    ],
+    "enabled": true
   }
 ]
 ```
@@ -426,6 +584,7 @@ Status Code **200**
 |»» vendorId|integer(int32)¦null|false|none|none|
 |»» profileIds|[integer]¦null|false|none|none|
 |»» odsInstanceIds|[integer]¦null|false|none|none|
+|»» enabled|boolean|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -506,7 +665,7 @@ The POST operation can be used to create or update resources. In database terms,
 > Body parameter
 
 ```json
-"{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+"{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
 ```
 
 <h3 id="creates-profile-based-on-the-supplied-values.-parameters">Parameters</h3>
@@ -580,7 +739,7 @@ The PUT operation is used to update a resource by identifier. If the resource id
 > Body parameter
 
 ```json
-"{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+"{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
 ```
 
 <h3 id="updates-profile-based-on-the-resource-identifier.-parameters">Parameters</h3>
@@ -893,7 +1052,8 @@ oauth ( Scopes: api )
     ],
     "odsInstanceIds": [
       0
-    ]
+    ],
+    "enabled": true
   }
 ]
 ```
@@ -924,6 +1084,7 @@ Status Code **200**
 |»» vendorId|integer(int32)¦null|false|none|none|
 |»» profileIds|[integer]¦null|false|none|none|
 |»» odsInstanceIds|[integer]¦null|false|none|none|
+|»» enabled|boolean|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -2070,6 +2231,7 @@ This GET operation provides access to resources using the "Get" search pattern. 
 |id|query|integer(int32)|false|Application id|
 |applicationName|query|string|false|Application name|
 |claimsetName|query|string|false|Claim set name|
+|ids|query|string|false|none|
 
 #### Enumerated Values
 
@@ -2097,7 +2259,8 @@ This GET operation provides access to resources using the "Get" search pattern. 
     ],
     "odsInstanceIds": [
       0
-    ]
+    ],
+    "enabled": true
   }
 ]
 ```
@@ -2127,6 +2290,7 @@ Status Code **200**
 |»» vendorId|integer(int32)¦null|false|none|none|
 |»» profileIds|[integer]¦null|false|none|none|
 |»» odsInstanceIds|[integer]¦null|false|none|none|
+|»» enabled|boolean|false|none|none|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
@@ -2154,7 +2318,8 @@ The POST operation can be used to create or update resources. In database terms,
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 ```
 
@@ -2222,7 +2387,8 @@ This GET operation provides access to resources using the "Get" search pattern. 
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 ```
 
@@ -2263,7 +2429,8 @@ The PUT operation is used to update a resource by identifier. If the resource id
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 ```
 
@@ -2502,9 +2669,9 @@ To authenticate Swagger requests, execute using "Authorize" above, not "Try It O
 > Body parameter
 
 ```yaml
-client_id: string
-client_secret: string
-grant_type: string
+client_id: null
+client_secret: null
+grant_type: null
 scope: string
 
 ```
@@ -2514,9 +2681,9 @@ scope: string
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|object|false|none|
-|» client_id|body|string|false|none|
-|» client_secret|body|string|false|none|
-|» grant_type|body|string|false|none|
+|» client_id|body|string |false|none|
+|» client_secret|body|string |false|none|
+|» grant_type|body|string |false|none|
 |» scope|body|string|false|none|
 
 <h3 id="retrieves-bearer-token-responses">Responses</h3>
@@ -2524,7 +2691,7 @@ scope: string
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Sign-in successful.|None|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad Request. The request was invalid and cannot be completed. See the response body for details.|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request, such as invalid scope.|None|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. An unhandled error occurred on the server. See the response body for details.|None|
 
 <aside class="warning">
@@ -2533,6 +2700,26 @@ oauth ( Scopes: api )
 </aside>
 
 # Schemas
+
+<h2 id="tocS_actionForResourceClaimModel">actionForResourceClaimModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaactionforresourceclaimmodel"></a>
+<a id="schema_actionForResourceClaimModel"></a>
+<a id="tocSactionforresourceclaimmodel"></a>
+<a id="tocsactionforresourceclaimmodel"></a>
+
+```json
+{
+  "name": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string¦null|false|none|none|
 
 <h2 id="tocS_actionModel">actionModel</h2>
 <!-- backwards compatibility -->
@@ -2560,6 +2747,35 @@ Action
 |name|string¦null|false|none|none|
 |uri|string¦null|false|none|none|
 
+<h2 id="tocS_actionWithAuthorizationStrategy">actionWithAuthorizationStrategy</h2>
+<!-- backwards compatibility -->
+<a id="schemaactionwithauthorizationstrategy"></a>
+<a id="schema_actionWithAuthorizationStrategy"></a>
+<a id="tocSactionwithauthorizationstrategy"></a>
+<a id="tocsactionwithauthorizationstrategy"></a>
+
+```json
+{
+  "actionId": 0,
+  "actionName": "string",
+  "authorizationStrategies": [
+    {
+      "authStrategyId": 0,
+      "authStrategyName": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|actionId|integer(int32)|false|none|none|
+|actionName|string¦null|false|none|none|
+|authorizationStrategies|[[authorizationStrategyModelForAction](#schemaauthorizationstrategymodelforaction)]¦null|false|none|none|
+
 <h2 id="tocS_addApplicationRequest">addApplicationRequest</h2>
 <!-- backwards compatibility -->
 <a id="schemaaddapplicationrequest"></a>
@@ -2580,7 +2796,8 @@ Action
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 
 ```
@@ -2597,6 +2814,7 @@ AddApplicationRequest
 |profileIds|[integer]¦null|false|none|Profile id|
 |educationOrganizationIds|[integer]|false|none|Education organization ids|
 |odsInstanceIds|[integer]|false|none|List of ODS instance id|
+|enabled|boolean¦null|false|none|Indicates whether the ApiClient's credetials is enabled. Defaults to true if not provided.|
 
 <h2 id="tocS_addClaimSetRequest">addClaimSetRequest</h2>
 <!-- backwards compatibility -->
@@ -2706,7 +2924,7 @@ AddOdsInstanceRequest
 <a id="tocsaddprofilerequest"></a>
 
 ```json
-"{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+"{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
 
 ```
 
@@ -2784,12 +3002,7 @@ AddVendorRequest
 <a id="tocsadminapierror"></a>
 
 ```json
-{
-  "title": "string",
-  "errors": [
-    "string"
-  ]
-}
+{}
 
 ```
 
@@ -2797,10 +3010,7 @@ AdminApiError
 
 ### Properties
 
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|title|string¦null|false|read-only|none|
-|errors|[string]¦null|false|read-only|none|
+*None*
 
 <h2 id="tocS_applicationModel">applicationModel</h2>
 <!-- backwards compatibility -->
@@ -2823,7 +3033,8 @@ AdminApiError
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 
 ```
@@ -2841,6 +3052,7 @@ Application
 |vendorId|integer(int32)¦null|false|none|none|
 |profileIds|[integer]¦null|false|none|none|
 |odsInstanceIds|[integer]¦null|false|none|none|
+|enabled|boolean|false|none|none|
 
 <h2 id="tocS_applicationResult">applicationResult</h2>
 <!-- backwards compatibility -->
@@ -2919,6 +3131,28 @@ AuthorizationStrategy
 |id|integer(int32)|false|none|none|
 |name|string¦null|false|none|none|
 |displayName|string¦null|false|none|none|
+
+<h2 id="tocS_authorizationStrategyModelForAction">authorizationStrategyModelForAction</h2>
+<!-- backwards compatibility -->
+<a id="schemaauthorizationstrategymodelforaction"></a>
+<a id="schema_authorizationStrategyModelForAction"></a>
+<a id="tocSauthorizationstrategymodelforaction"></a>
+<a id="tocsauthorizationstrategymodelforaction"></a>
+
+```json
+{
+  "authStrategyId": 0,
+  "authStrategyName": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|authStrategyId|integer(int32)|false|none|none|
+|authStrategyName|string¦null|false|none|none|
 
 <h2 id="tocS_claimSetDetailsModel">claimSetDetailsModel</h2>
 <!-- backwards compatibility -->
@@ -3201,7 +3435,8 @@ CopyClaimSetRequest
   ],
   "odsInstanceIds": [
     0
-  ]
+  ],
+  "enabled": true
 }
 
 ```
@@ -3218,6 +3453,7 @@ EditApplicationRequest
 |profileIds|[integer]¦null|false|none|Profile id|
 |educationOrganizationIds|[integer]|false|none|Education organization ids|
 |odsInstanceIds|[integer]|false|none|List of ODS instance id|
+|enabled|boolean¦null|false|none|Indicates whether the ApiClient's credetials is enabled. Defaults to true if not provided.|
 
 <h2 id="tocS_editClaimSetRequest">editClaimSetRequest</h2>
 <!-- backwards compatibility -->
@@ -3327,7 +3563,7 @@ EditOdsInstanceRequest
 <a id="tocseditprofilerequest"></a>
 
 ```json
-"{\r\n  \"name\": \"Test-Profile\",\r\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\r\n}"
+"{\n  \"name\": \"Test-Profile\",\n  \"definition\": \"<Profile name=\\\"Test-Profile\\\"><Resource name=\\\"Resource1\\\"><ReadContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection1\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></ReadContentType><WriteContentType memberSelection=\\\"IncludeOnly\\\"><Collection name=\\\"Collection2\\\" memberSelection=\\\"IncludeOnly\\\"><Property name=\\\"Property1\\\" /><Property name=\\\"Property2\\\" /></Collection></WriteContentType></Resource></Profile>\"\n}"
 
 ```
 
@@ -3731,6 +3967,73 @@ ResourceClaimAction
 |---|---|---|---|---|
 |name|string¦null|false|none|none|
 |enabled|boolean|false|none|none|
+
+<h2 id="tocS_resourceClaimActionAuthStrategyModel">resourceClaimActionAuthStrategyModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaresourceclaimactionauthstrategymodel"></a>
+<a id="schema_resourceClaimActionAuthStrategyModel"></a>
+<a id="tocSresourceclaimactionauthstrategymodel"></a>
+<a id="tocsresourceclaimactionauthstrategymodel"></a>
+
+```json
+{
+  "resourceClaimId": 0,
+  "resourceName": "string",
+  "claimName": "string",
+  "authorizationStrategiesForActions": [
+    {
+      "actionId": 0,
+      "actionName": "string",
+      "authorizationStrategies": [
+        {
+          "authStrategyId": 0,
+          "authStrategyName": "string"
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|resourceClaimId|integer(int32)|false|none|none|
+|resourceName|string¦null|false|none|none|
+|claimName|string¦null|false|none|none|
+|authorizationStrategiesForActions|[[actionWithAuthorizationStrategy](#schemaactionwithauthorizationstrategy)]¦null|false|none|none|
+
+<h2 id="tocS_resourceClaimActionModel">resourceClaimActionModel</h2>
+<!-- backwards compatibility -->
+<a id="schemaresourceclaimactionmodel"></a>
+<a id="schema_resourceClaimActionModel"></a>
+<a id="tocSresourceclaimactionmodel"></a>
+<a id="tocsresourceclaimactionmodel"></a>
+
+```json
+{
+  "resourceClaimId": 0,
+  "resourceName": "string",
+  "claimName": "string",
+  "actions": [
+    {
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|resourceClaimId|integer(int32)|false|none|none|
+|resourceName|string¦null|false|none|none|
+|claimName|string¦null|false|none|none|
+|actions|[[actionForResourceClaimModel](#schemaactionforresourceclaimmodel)]¦null|false|none|none|
 
 <h2 id="tocS_resourceClaimModel">resourceClaimModel</h2>
 <!-- backwards compatibility -->

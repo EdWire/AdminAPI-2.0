@@ -1,0 +1,3722 @@
+openapi: 3.0.1
+info:
+  description: "The Ed-Fi Admin API is a REST API-based administrative interface for\
+    \ managing vendors, applications, client credentials, and authorization rules\
+    \ for accessing an Ed-Fi API."
+  title: Admin API Documentation
+  version: v2
+servers:
+- url: /
+security:
+- oauth:
+  - api
+paths:
+  /v2/resourceClaims:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Resource Claim Id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Resource Claim Name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/resourceClaimModel"
+                type: array
+          description: OK
+      summary: Retrieves all resourceClaims.
+      tags:
+      - ResourceClaims
+  /v2/resourceClaims/{id}:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resourceClaimModel"
+          description: OK
+      summary: Retrieves a specific resourceClaim based on the identifier.
+      tags:
+      - ResourceClaims
+  /v2/resourceClaimActions:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: resourceName
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/resourceClaimActionModel"
+                type: array
+          description: OK
+      summary: Retrieves all resourceClaimActions.
+      tags:
+      - ResourceClaimActions
+  /v2/resourceClaimActionAuthStrategies:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: resourceName
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/resourceClaimActionAuthStrategyModel"
+                type: array
+          description: OK
+      summary: Retrieves all resourceClaimActionAuthStrategies.
+      tags:
+      - ResourceClaimActionAuthStrategies
+  /v2/vendors:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Vendor/ company id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Vendor/ company name
+        explode: true
+        in: query
+        name: company
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Namespace prefix for the vendor. Multiple namespace prefixes
+          can be provided as comma separated list if required.
+        explode: true
+        in: query
+        name: namespacePrefixes
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Vendor contact name
+        explode: true
+        in: query
+        name: contactName
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Vendor contact email id
+        explode: true
+        in: query
+        name: contactEmailAddress
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/vendorModel"
+                type: array
+          description: OK
+      summary: Retrieves all vendors.
+      tags:
+      - Vendors
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addVendorRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates vendor based on the supplied values.
+      tags:
+      - Vendors
+  /v2/vendors/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing vendor using the resource identifier.
+      tags:
+      - Vendors
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/vendorModel"
+          description: OK
+      summary: Retrieves a specific vendor based on the identifier.
+      tags:
+      - Vendors
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editVendorRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates vendor based on the resource identifier.
+      tags:
+      - Vendors
+  /v2/profiles:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Profile id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Profile name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/profileModel"
+                type: array
+          description: OK
+      summary: Retrieves all profiles.
+      tags:
+      - Profiles
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addProfileRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates profile based on the supplied values.
+      tags:
+      - Profiles
+  /v2/profiles/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing profile using the resource identifier.
+      tags:
+      - Profiles
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profileDetailsModel"
+          description: OK
+      summary: Retrieves a specific profile based on the identifier.
+      tags:
+      - Profiles
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editProfileRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates profile based on the resource identifier.
+      tags:
+      - Profiles
+  /v2/odsInstances:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: List of ODS instance id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Ods Instance name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: instanceType
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/odsInstanceModel"
+                type: array
+          description: OK
+      summary: Retrieves all odsInstances.
+      tags:
+      - OdsInstances
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addOdsInstanceRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates odsInstance based on the supplied values.
+      tags:
+      - OdsInstances
+  /v2/odsInstances/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing odsInstance using the resource identifier.
+      tags:
+      - OdsInstances
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/odsInstanceDetailModel"
+          description: OK
+      summary: Retrieves a specific odsInstance based on the identifier.
+      tags:
+      - OdsInstances
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editOdsInstanceRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates odsInstance based on the resource identifier.
+      tags:
+      - OdsInstances
+  /v2/odsInstanceDerivatives:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/odsInstanceDerivativeModel"
+                type: array
+          description: OK
+      summary: Retrieves all odsInstanceDerivatives.
+      tags:
+      - OdsInstanceDerivatives
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addOdsInstanceDerivativeRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates odsInstanceDerivative based on the supplied values.
+      tags:
+      - OdsInstanceDerivatives
+  /v2/odsInstanceDerivatives/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing odsInstanceDerivative using the resource identifier.
+      tags:
+      - OdsInstanceDerivatives
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/odsInstanceDerivativeModel"
+          description: OK
+      summary: Retrieves a specific odsInstanceDerivative based on the identifier.
+      tags:
+      - OdsInstanceDerivatives
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editOdsInstanceDerivativeRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates odsInstanceDerivative based on the resource identifier.
+      tags:
+      - OdsInstanceDerivatives
+  /v2/odsInstanceContexts:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/odsInstanceContextModel"
+                type: array
+          description: OK
+      summary: Retrieves all odsInstanceContexts.
+      tags:
+      - OdsInstanceContexts
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addOdsInstanceContextRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates odsInstanceContext based on the supplied values.
+      tags:
+      - OdsInstanceContexts
+  /v2/odsInstanceContexts/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing odsInstanceContext using the resource identifier.
+      tags:
+      - OdsInstanceContexts
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/odsInstanceContextModel"
+          description: OK
+      summary: Retrieves a specific odsInstanceContext based on the identifier.
+      tags:
+      - OdsInstanceContexts
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editOdsInstanceContextRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates odsInstanceContext based on the resource identifier.
+      tags:
+      - OdsInstanceContexts
+  /v2/claimSets/{id}/export:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/claimSetDetailsModel"
+          description: OK
+      summary: Exports a specific claimset by id
+      tags:
+      - ClaimSets
+  /v2/claimSets:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Claim set id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Claim set name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/claimSetModel"
+                type: array
+          description: OK
+      summary: Retrieves all claimSets.
+      tags:
+      - ClaimSets
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Creates claimSet based on the supplied values.
+      tags:
+      - ClaimSets
+  /v2/claimSets/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing claimSet using the resource identifier.
+      tags:
+      - ClaimSets
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/claimSetDetailsModel"
+          description: OK
+      summary: Retrieves a specific claimSet based on the identifier.
+      tags:
+      - ClaimSets
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates claimSet based on the resource identifier.
+      tags:
+      - ClaimSets
+  /v2/authorizationStrategies:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/authorizationStrategyModel"
+                type: array
+          description: OK
+      summary: Retrieves all authorizationStrategies.
+      tags:
+      - AuthorizationStrategies
+  /v2/applications:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Application id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Application name
+        explode: true
+        in: query
+        name: applicationName
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Claim set name
+        explode: true
+        in: query
+        name: claimsetName
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: ids
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/applicationModel"
+                type: array
+          description: OK
+      summary: Retrieves all applications.
+      tags:
+      - Applications
+    post:
+      description: "The POST operation can be used to create or update resources.\
+        \ In database terms, this is often referred to as an \"upsert\" operation\
+        \ (insert + update). Clients should NOT include the resource \"id\" in the\
+        \ JSON body because it will result in an error. The web service will identify\
+        \ whether the resource already exists based on the natural key values provided,\
+        \ and update or create the resource appropriately. It is recommended to use\
+        \ POST for both create and update except while updating natural key of a resource\
+        \ in which case PUT operation must be used."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addApplicationRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/applicationResult"
+          description: Created
+      summary: Creates application based on the supplied values.
+      tags:
+      - Applications
+  /v2/applications/{id}:
+    delete:
+      description: "The DELETE operation is used to delete an existing resource by\
+        \ identifier. If the resource doesn't exist, an error will result (the resource\
+        \ will not be found)."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: Resource was successfully deleted.
+      summary: Deletes an existing application using the resource identifier.
+      tags:
+      - Applications
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/applicationModel"
+          description: OK
+      summary: Retrieves a specific application based on the identifier.
+      tags:
+      - Applications
+    put:
+      description: "The PUT operation is used to update a resource by identifier.\
+        \ If the resource identifier (\"id\") is provided in the JSON body, it will\
+        \ be ignored. Additionally, this API resource is not configured for cascading\
+        \ natural key updates. Natural key values for this resource cannot be changed\
+        \ using PUT operation, so the recommendation is to use POST as that supports\
+        \ upsert behavior."
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editApplicationRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates application based on the resource identifier.
+      tags:
+      - Applications
+  /v2/odsInstances/{id}/applications:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/applicationModel"
+                type: array
+          description: OK
+      summary: Retrieves applications assigned to a specific ODS instance based on
+        the resource identifier.
+      tags:
+      - OdsInstances
+  /v2/vendors/{id}/applications:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/applicationModel"
+                type: array
+          description: OK
+      summary: Retrieves applications assigned to a specific vendor based on the resource
+        identifier.
+      tags:
+      - Vendors
+  /v2/actions:
+    get:
+      description: This GET operation provides access to resources using the "Get"
+        search pattern. The values of any properties of the resource that are specified
+        will be used to return all matching results (if it exists).
+      parameters:
+      - description: Indicates how many items should be skipped before returning results.
+        explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the maximum number of items that should be returned
+          in the results.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Indicates the property name by which the results will be sorted.
+        explode: true
+        in: query
+        name: orderBy
+        required: false
+        schema:
+          default: ""
+          type: string
+        style: form
+      - description: Indicates whether the result should be sorted in descending order
+          (DESC) or ascending order (ASC).
+        explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: Descending
+          enum:
+          - Ascending
+          - Descending
+          title: Indicates whether the result should be sorted in descending order
+            (DESC) or ascending order (ASC).
+          type: string
+        style: form
+      - description: Action id
+        explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: Action name
+        explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/actionModel"
+                type: array
+          description: OK
+      summary: Retrieves all actions.
+      tags:
+      - Actions
+  /:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/informationResult"
+          description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/informationResult"
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+      summary: Retrieve API informational metadata
+      tags:
+      - Information
+  /v2/claimSets/copy:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/copyClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Copies the existing claimset and create a new one.
+      tags:
+      - ClaimSets
+  /v2/claimSets/import:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/importClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Imports a new claimset
+      tags:
+      - ClaimSets
+  /v2/claimSets/{claimSetId}/resourceClaimActions/{resourceClaimId}/overrideAuthorizationStrategy:
+    post:
+      description: "Override the default authorization strategies on provided resource\
+        \ claim for a specific action.\r\n\r\nex: actionName = read,  authorizationStrategies=\
+        \ [ \"Ownershipbased\" ]"
+      parameters:
+      - explode: false
+        in: path
+        name: claimSetId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: resourceClaimId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/overrideAuthStategyOnClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Overrides the default authorization strategies on provided resource
+        claim for a specific action.
+      tags:
+      - ClaimSets
+  /v2/claimSets/{claimSetId}/resourceClaimActions/{resourceClaimId}/resetAuthorizationStrategies:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: claimSetId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: resourceClaimId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Resets to default authorization strategies on provided resource claim.
+      tags:
+      - ClaimSets
+  /v2/claimSets/{claimSetId}/resourceClaimActions:
+    post:
+      description: "Add resourceClaimAction association to claim set. At least one\
+        \ action should be enabled. Valid actions are read, create, update, delete,\
+        \ readchanges.\r\nresouceclaimId is required fields."
+      parameters:
+      - explode: false
+        in: path
+        name: claimSetId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/addResourceClaimOnClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "201":
+          description: Created
+      summary: Adds ResourceClaimAction association to a claim set.
+      tags:
+      - ClaimSets
+  /connect/register:
+    post:
+      description: Registers new client
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding:
+              ClientId:
+                style: form
+              ClientSecret:
+                style: form
+              DisplayName:
+                style: form
+            schema:
+              $ref: "#/components/schemas/_connect_register_post_request"
+      responses:
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          description: Application registered successfully.
+      summary: Registers new client
+      tags:
+      - Connect
+  /connect/token:
+    post:
+      description: |2-
+
+        To authenticate Swagger requests, execute using "Authorize" above, not "Try It Out" here.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/_connect_token_post_request"
+      responses:
+        "400":
+          description: "Bad request, such as invalid scope."
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "200":
+          description: Sign-in successful.
+      summary: Retrieves bearer token
+      tags:
+      - Connect
+  /v2/claimSets/{claimSetId}/resourceClaimActions/{resourceClaimId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: claimSetId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: resourceClaimId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "200":
+          description: OK
+      summary: Deletes a resource claims association from a claimset
+      tags:
+      - ClaimSets
+    put:
+      description: "Updates  the resourceClaimActions to a  specific resource claim\
+        \ on a claimset. At least one action should be enabled. Valid actions are\
+        \ read, create, update, delete, readchanges."
+      parameters:
+      - explode: false
+        in: path
+        name: claimSetId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: resourceClaimId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editResourceClaimOnClaimSetRequest"
+        required: true
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          description: OK
+      summary: Updates the ResourceClaimActions to a specific resource claim on a
+        claimset.
+      tags:
+      - ClaimSets
+  /v2/applications/{id}/reset-credential:
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "401":
+          description: Unauthorized. The request requires authentication
+        "403":
+          description: "Forbidden. The request is authenticated, but not authorized\
+            \ to access this resource"
+        "409":
+          description: "Conflict. The request is authenticated, but it has a conflict\
+            \ with an existing element"
+        "500":
+          description: Internal server error. An unhandled error occurred on the server.
+            See the response body for details.
+        "404":
+          description: Not found. A resource with given identifier could not be found.
+        "400":
+          description: Bad Request. The request was invalid and cannot be completed.
+            See the response body for details.
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/applicationResult"
+          description: OK
+      summary: Reset application credentials. Returns new key and secret.
+      tags:
+      - Applications
+components:
+  schemas:
+    actionForResourceClaimModel:
+      additionalProperties: false
+      example:
+        name: name
+      properties:
+        name:
+          nullable: true
+          type: string
+      type: object
+    actionModel:
+      additionalProperties: false
+      example:
+        name: name
+        id: 0
+        uri: uri
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        uri:
+          nullable: true
+          type: string
+      title: Action
+      type: object
+    actionWithAuthorizationStrategy:
+      additionalProperties: false
+      example:
+        actionId: 6
+        authorizationStrategies:
+        - authStrategyName: authStrategyName
+          authStrategyId: 1
+        - authStrategyName: authStrategyName
+          authStrategyId: 1
+        actionName: actionName
+      properties:
+        actionId:
+          format: int32
+          type: integer
+        actionName:
+          nullable: true
+          type: string
+        authorizationStrategies:
+          items:
+            $ref: "#/components/schemas/authorizationStrategyModelForAction"
+          nullable: true
+          type: array
+      type: object
+    addApplicationRequest:
+      additionalProperties: false
+      properties:
+        applicationName:
+          description: Application name
+          type: string
+        vendorId:
+          description: Vendor/ company id
+          format: int32
+          type: integer
+        claimSetName:
+          description: Claim set name
+          type: string
+        profileIds:
+          description: Profile id
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        educationOrganizationIds:
+          description: Education organization ids
+          items:
+            format: int64
+            type: integer
+          type: array
+        odsInstanceIds:
+          description: List of ODS instance id
+          items:
+            format: int32
+            type: integer
+          type: array
+        enabled:
+          description: Indicates whether the ApiClient's credetials is enabled. Defaults
+            to true if not provided.
+          nullable: true
+          type: boolean
+      title: AddApplicationRequest
+      type: object
+    addClaimSetRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: Claim set name
+          type: string
+      title: AddClaimSetRequest
+      type: object
+    addOdsInstanceContextRequest:
+      additionalProperties: false
+      properties:
+        odsInstanceId:
+          description: ODS instance context ODS instance id.
+          format: int32
+          type: integer
+        contextKey:
+          description: context key.
+          type: string
+        contextValue:
+          description: context value.
+          type: string
+      title: AddOdsInstanceContextRequest
+      type: object
+    addOdsInstanceDerivativeRequest:
+      additionalProperties: false
+      properties:
+        odsInstanceId:
+          description: ODS instance derivative ODS instance id.
+          format: int32
+          type: integer
+        derivativeType:
+          description: derivative type.
+          type: string
+        connectionString:
+          description: connection string.
+          type: string
+      title: AddOdsInstanceDerivativeRequest
+      type: object
+    addOdsInstanceRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: Ods Instance name
+          type: string
+        instanceType:
+          description: Ods Instance type
+          nullable: true
+          type: string
+        connectionString:
+          description: Ods Instance connection string
+          type: string
+      title: AddOdsInstanceRequest
+      type: object
+    addProfileRequest:
+      additionalProperties: false
+      example: |-
+        {
+          "name": "Test-Profile",
+          "definition": "<Profile name=\"Test-Profile\"><Resource name=\"Resource1\"><ReadContentType memberSelection=\"IncludeOnly\"><Collection name=\"Collection1\" memberSelection=\"IncludeOnly\"><Property name=\"Property1\" /><Property name=\"Property2\" /></Collection></ReadContentType><WriteContentType memberSelection=\"IncludeOnly\"><Collection name=\"Collection2\" memberSelection=\"IncludeOnly\"><Property name=\"Property1\" /><Property name=\"Property2\" /></Collection></WriteContentType></Resource></Profile>"
+        }
+      properties:
+        name:
+          description: Profile name
+          type: string
+        definition:
+          description: Profile definition
+          type: string
+      title: AddProfileRequest
+      type: object
+    addResourceClaimOnClaimSetRequest:
+      additionalProperties: false
+      properties:
+        resourceClaimId:
+          description: ResourceClaim id
+          format: int32
+          type: integer
+        resourceClaimActions:
+          items:
+            $ref: "#/components/schemas/resourceClaimAction"
+          type: array
+      title: AddResourceClaimActionsOnClaimSetRequest
+      type: object
+    addVendorRequest:
+      additionalProperties: false
+      properties:
+        company:
+          description: Vendor/ company name
+          type: string
+        namespacePrefixes:
+          description: Namespace prefix for the vendor. Multiple namespace prefixes
+            can be provided as comma separated list if required.
+          type: string
+        contactName:
+          description: Vendor contact name
+          type: string
+        contactEmailAddress:
+          description: Vendor contact email id
+          type: string
+      title: AddVendorRequest
+      type: object
+    adminApiError:
+      additionalProperties: false
+      description: Wrapper schema for all error responses
+      title: AdminApiError
+      type: object
+    applicationModel:
+      additionalProperties: false
+      example:
+        odsInstanceIds:
+        - 5
+        - 5
+        vendorId: 1
+        profileIds:
+        - 5
+        - 5
+        id: 0
+        claimSetName: claimSetName
+        educationOrganizationIds:
+        - 6
+        - 6
+        applicationName: applicationName
+        enabled: true
+      properties:
+        id:
+          format: int32
+          type: integer
+        applicationName:
+          nullable: true
+          type: string
+        claimSetName:
+          nullable: true
+          type: string
+        educationOrganizationIds:
+          items:
+            format: int64
+            type: integer
+          nullable: true
+          type: array
+        vendorId:
+          format: int32
+          nullable: true
+          type: integer
+        profileIds:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        odsInstanceIds:
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        enabled:
+          type: boolean
+      title: Application
+      type: object
+    applicationResult:
+      additionalProperties: false
+      example:
+        id: 0
+        secret: secret
+        key: key
+      properties:
+        id:
+          format: int32
+          type: integer
+        key:
+          nullable: true
+          type: string
+        secret:
+          nullable: true
+          type: string
+      title: ApplicationKeySecret
+      type: object
+    authorizationStrategy:
+      additionalProperties: false
+      example:
+        authStrategyName: authStrategyName
+        isInheritedFromParent: true
+        authStrategyId: 5
+      properties:
+        authStrategyId:
+          format: int32
+          type: integer
+        authStrategyName:
+          nullable: true
+          type: string
+        isInheritedFromParent:
+          type: boolean
+      title: ResourceClaimAuthorizationStrategy
+      type: object
+    authorizationStrategyModel:
+      additionalProperties: false
+      example:
+        displayName: displayName
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        displayName:
+          nullable: true
+          type: string
+      title: AuthorizationStrategy
+      type: object
+    authorizationStrategyModelForAction:
+      additionalProperties: false
+      example:
+        authStrategyName: authStrategyName
+        authStrategyId: 1
+      properties:
+        authStrategyId:
+          format: int32
+          type: integer
+        authStrategyName:
+          nullable: true
+          type: string
+      type: object
+    claimSetDetailsModel:
+      additionalProperties: false
+      example:
+        resourceClaims:
+        - _defaultAuthorizationStrategiesForCRUD:
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          authorizationStrategyOverridesForCRUD:
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          children:
+          - null
+          - null
+          name: name
+          id: 6
+          actions:
+          - name: name
+            enabled: true
+          - name: name
+            enabled: true
+        - _defaultAuthorizationStrategiesForCRUD:
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          authorizationStrategyOverridesForCRUD:
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          - actionId: 1
+            authorizationStrategies:
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            - authStrategyName: authStrategyName
+              isInheritedFromParent: true
+              authStrategyId: 5
+            actionName: actionName
+          children:
+          - null
+          - null
+          name: name
+          id: 6
+          actions:
+          - name: name
+            enabled: true
+          - name: name
+            enabled: true
+        _isSystemReserved: true
+        name: name
+        id: 0
+        _applications:
+        - applicationName: applicationName
+        - applicationName: applicationName
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        _isSystemReserved:
+          readOnly: true
+          type: boolean
+        _applications:
+          items:
+            $ref: "#/components/schemas/simpleApplicationModel"
+          nullable: true
+          readOnly: true
+          type: array
+        resourceClaims:
+          items:
+            $ref: "#/components/schemas/claimSetResourceClaimModel"
+          nullable: true
+          type: array
+      title: ClaimSetWithResources
+      type: object
+    claimSetModel:
+      additionalProperties: false
+      example:
+        _isSystemReserved: true
+        name: name
+        id: 0
+        _applications:
+        - applicationName: applicationName
+        - applicationName: applicationName
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        _isSystemReserved:
+          readOnly: true
+          type: boolean
+        _applications:
+          items:
+            $ref: "#/components/schemas/simpleApplicationModel"
+          nullable: true
+          readOnly: true
+          type: array
+      title: ClaimSet
+      type: object
+    claimSetResourceClaimActionAuthStrategies:
+      additionalProperties: false
+      example:
+        actionId: 1
+        authorizationStrategies:
+        - authStrategyName: authStrategyName
+          isInheritedFromParent: true
+          authStrategyId: 5
+        - authStrategyName: authStrategyName
+          isInheritedFromParent: true
+          authStrategyId: 5
+        actionName: actionName
+      properties:
+        actionId:
+          format: int32
+          nullable: true
+          type: integer
+        actionName:
+          nullable: true
+          type: string
+        authorizationStrategies:
+          items:
+            $ref: "#/components/schemas/authorizationStrategy"
+          nullable: true
+          type: array
+      title: ClaimSetResourceClaimActionAuthorizationStrategies
+      type: object
+    claimSetResourceClaimModel:
+      additionalProperties: false
+      example:
+        _defaultAuthorizationStrategiesForCRUD:
+        - actionId: 1
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          actionName: actionName
+        - actionId: 1
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          actionName: actionName
+        authorizationStrategyOverridesForCRUD:
+        - actionId: 1
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          actionName: actionName
+        - actionId: 1
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          - authStrategyName: authStrategyName
+            isInheritedFromParent: true
+            authStrategyId: 5
+          actionName: actionName
+        children:
+        - null
+        - null
+        name: name
+        id: 6
+        actions:
+        - name: name
+          enabled: true
+        - name: name
+          enabled: true
+      properties:
+        id:
+          format: int32
+          readOnly: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+        actions:
+          items:
+            $ref: "#/components/schemas/resourceClaimAction"
+          nullable: true
+          type: array
+        _defaultAuthorizationStrategiesForCRUD:
+          items:
+            $ref: "#/components/schemas/claimSetResourceClaimActionAuthStrategies"
+          nullable: true
+          readOnly: true
+          type: array
+        authorizationStrategyOverridesForCRUD:
+          items:
+            $ref: "#/components/schemas/claimSetResourceClaimActionAuthStrategies"
+          nullable: true
+          type: array
+        children:
+          description: Children are collection of ResourceClaim
+          items:
+            $ref: "#/components/schemas/claimSetResourceClaimModel"
+          nullable: true
+          type: array
+      title: ClaimSetResourceClaim
+      type: object
+    copyClaimSetRequest:
+      additionalProperties: false
+      properties:
+        originalId:
+          description: ClaimSet id to copy
+          format: int32
+          type: integer
+        name:
+          description: New claimset name
+          type: string
+      title: CopyClaimSetRequest
+      type: object
+    editApplicationRequest:
+      additionalProperties: false
+      properties:
+        applicationName:
+          description: Application name
+          type: string
+        vendorId:
+          description: Vendor/ company id
+          format: int32
+          type: integer
+        claimSetName:
+          description: Claim set name
+          type: string
+        profileIds:
+          description: Profile id
+          items:
+            format: int32
+            type: integer
+          nullable: true
+          type: array
+        educationOrganizationIds:
+          description: Education organization ids
+          items:
+            format: int64
+            type: integer
+          type: array
+        odsInstanceIds:
+          description: List of ODS instance id
+          items:
+            format: int32
+            type: integer
+          type: array
+        enabled:
+          description: Indicates whether the ApiClient's credetials is enabled. Defaults
+            to true if not provided.
+          nullable: true
+          type: boolean
+      title: EditApplicationRequest
+      type: object
+    editClaimSetRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: Claim set name
+          type: string
+      title: EditClaimSetRequest
+      type: object
+    editOdsInstanceContextRequest:
+      additionalProperties: false
+      properties:
+        odsInstanceId:
+          description: ODS instance context ODS instance id.
+          format: int32
+          type: integer
+        contextKey:
+          description: context key.
+          type: string
+        contextValue:
+          description: context value.
+          type: string
+      title: EditOdsInstanceContextRequest
+      type: object
+    editOdsInstanceDerivativeRequest:
+      additionalProperties: false
+      properties:
+        odsInstanceId:
+          description: ODS instance derivative ODS instance id.
+          format: int32
+          type: integer
+        derivativeType:
+          description: derivative type.
+          type: string
+        connectionString:
+          description: connection string.
+          type: string
+      title: EditOdsInstanceDerivativeRequest
+      type: object
+    editOdsInstanceRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: Ods Instance name
+          type: string
+        instanceType:
+          description: Ods Instance type
+          nullable: true
+          type: string
+        connectionString:
+          description: Ods Instance connection string
+          nullable: true
+          type: string
+      title: EditOdsInstanceRequest
+      type: object
+    editProfileRequest:
+      additionalProperties: false
+      example: |-
+        {
+          "name": "Test-Profile",
+          "definition": "<Profile name=\"Test-Profile\"><Resource name=\"Resource1\"><ReadContentType memberSelection=\"IncludeOnly\"><Collection name=\"Collection1\" memberSelection=\"IncludeOnly\"><Property name=\"Property1\" /><Property name=\"Property2\" /></Collection></ReadContentType><WriteContentType memberSelection=\"IncludeOnly\"><Collection name=\"Collection2\" memberSelection=\"IncludeOnly\"><Property name=\"Property1\" /><Property name=\"Property2\" /></Collection></WriteContentType></Resource></Profile>"
+        }
+      properties:
+        name:
+          description: Profile name
+          type: string
+        definition:
+          description: Profile definition
+          type: string
+      title: EditProfileRequest
+      type: object
+    editResourceClaimOnClaimSetRequest:
+      additionalProperties: false
+      properties:
+        resourceClaimActions:
+          items:
+            $ref: "#/components/schemas/resourceClaimAction"
+          type: array
+      title: EditResourceClaimActionsOnClaimSetRequest
+      type: object
+    editVendorRequest:
+      additionalProperties: false
+      properties:
+        company:
+          description: Vendor/ company name
+          type: string
+        namespacePrefixes:
+          description: Namespace prefix for the vendor. Multiple namespace prefixes
+            can be provided as comma separated list if required.
+          type: string
+        contactName:
+          description: Vendor contact name
+          type: string
+        contactEmailAddress:
+          description: Vendor contact email id
+          type: string
+      title: EditVendorRequest
+      type: object
+    importClaimSetRequest:
+      additionalProperties: false
+      properties:
+        name:
+          description: Claim set name
+          type: string
+        resourceClaims:
+          description: Resource Claims
+          items:
+            $ref: "#/components/schemas/claimSetResourceClaimModel"
+          type: array
+      title: ImportClaimSetRequest
+      type: object
+    informationResult:
+      additionalProperties: false
+      example:
+        build: build
+        version: version
+      properties:
+        version:
+          description: Application version
+          type: string
+        build:
+          description: Build / release version
+          type: string
+      title: Information
+      type: object
+    odsInstanceContextModel:
+      additionalProperties: false
+      example:
+        contextKey: contextKey
+        odsInstanceId: 1
+        contextValue: contextValue
+        id: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        odsInstanceId:
+          format: int32
+          type: integer
+        contextKey:
+          nullable: true
+          type: string
+        contextValue:
+          nullable: true
+          type: string
+      title: OdsInstanceContext
+      type: object
+    odsInstanceDerivativeModel:
+      additionalProperties: false
+      example:
+        odsInstanceId: 5
+        id: 5
+        derivativeType: derivativeType
+      properties:
+        id:
+          format: int32
+          type: integer
+        odsInstanceId:
+          format: int32
+          nullable: true
+          type: integer
+        derivativeType:
+          nullable: true
+          type: string
+      title: OdsInstanceDerivative
+      type: object
+    odsInstanceDetailModel:
+      additionalProperties: false
+      example:
+        instanceType: instanceType
+        odsInstanceContexts:
+        - contextKey: contextKey
+          odsInstanceId: 1
+          contextValue: contextValue
+          id: 6
+        - contextKey: contextKey
+          odsInstanceId: 1
+          contextValue: contextValue
+          id: 6
+        name: name
+        id: 0
+        odsInstanceDerivatives:
+        - odsInstanceId: 5
+          id: 5
+          derivativeType: derivativeType
+        - odsInstanceId: 5
+          id: 5
+          derivativeType: derivativeType
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        instanceType:
+          nullable: true
+          type: string
+        odsInstanceContexts:
+          items:
+            $ref: "#/components/schemas/odsInstanceContextModel"
+          nullable: true
+          type: array
+        odsInstanceDerivatives:
+          items:
+            $ref: "#/components/schemas/odsInstanceDerivativeModel"
+          nullable: true
+          type: array
+      title: OdsInstanceDetail
+      type: object
+    odsInstanceModel:
+      additionalProperties: false
+      example:
+        instanceType: instanceType
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        instanceType:
+          nullable: true
+          type: string
+      title: OdsInstance
+      type: object
+    overrideAuthStategyOnClaimSetRequest:
+      additionalProperties: false
+      properties:
+        actionName:
+          nullable: true
+          type: string
+        authorizationStrategies:
+          description: AuthorizationStrategy Names
+          items:
+            type: string
+          type: array
+      title: OverrideAuthStategyOnClaimSetRequest
+      type: object
+    profileDetailsModel:
+      additionalProperties: false
+      example:
+        name: name
+        definition: definition
+        id: 0
+      properties:
+        id:
+          format: int32
+          nullable: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+        definition:
+          nullable: true
+          type: string
+      title: ProfileDetails
+      type: object
+    profileModel:
+      additionalProperties: false
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int32
+          nullable: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+      title: Profile
+      type: object
+    registerClientRequest:
+      additionalProperties: false
+      properties:
+        clientId:
+          description: Client id
+          type: string
+        clientSecret:
+          description: Client secret
+          type: string
+        displayName:
+          description: Client display name
+          type: string
+      title: RegisterClientRequest
+      type: object
+    resourceClaimAction:
+      additionalProperties: false
+      example:
+        name: name
+        enabled: true
+      properties:
+        name:
+          nullable: true
+          type: string
+        enabled:
+          type: boolean
+      title: ResourceClaimAction
+      type: object
+    resourceClaimActionAuthStrategyModel:
+      additionalProperties: false
+      example:
+        authorizationStrategiesForActions:
+        - actionId: 6
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            authStrategyId: 1
+          - authStrategyName: authStrategyName
+            authStrategyId: 1
+          actionName: actionName
+        - actionId: 6
+          authorizationStrategies:
+          - authStrategyName: authStrategyName
+            authStrategyId: 1
+          - authStrategyName: authStrategyName
+            authStrategyId: 1
+          actionName: actionName
+        claimName: claimName
+        resourceName: resourceName
+        resourceClaimId: 0
+      properties:
+        resourceClaimId:
+          format: int32
+          type: integer
+        resourceName:
+          nullable: true
+          type: string
+        claimName:
+          nullable: true
+          type: string
+        authorizationStrategiesForActions:
+          items:
+            $ref: "#/components/schemas/actionWithAuthorizationStrategy"
+          nullable: true
+          type: array
+      type: object
+    resourceClaimActionModel:
+      additionalProperties: false
+      example:
+        claimName: claimName
+        resourceName: resourceName
+        resourceClaimId: 0
+        actions:
+        - name: name
+        - name: name
+      properties:
+        resourceClaimId:
+          format: int32
+          type: integer
+        resourceName:
+          nullable: true
+          type: string
+        claimName:
+          nullable: true
+          type: string
+        actions:
+          items:
+            $ref: "#/components/schemas/actionForResourceClaimModel"
+          nullable: true
+          type: array
+      type: object
+    resourceClaimModel:
+      additionalProperties: false
+      example:
+        parentName: parentName
+        children:
+        - null
+        - null
+        name: name
+        id: 0
+        parentId: 6
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          nullable: true
+          type: string
+        parentId:
+          format: int32
+          nullable: true
+          type: integer
+        parentName:
+          nullable: true
+          type: string
+        children:
+          description: Children are collection of SimpleResourceClaimModel
+          items:
+            $ref: "#/components/schemas/resourceClaimModel"
+          nullable: true
+          type: array
+      title: ResourceClaimModel
+      type: object
+    simpleApplicationModel:
+      additionalProperties: false
+      example:
+        applicationName: applicationName
+      properties:
+        applicationName:
+          nullable: true
+          type: string
+      title: Application
+      type: object
+    vendorModel:
+      additionalProperties: false
+      example:
+        contactEmailAddress: contactEmailAddress
+        namespacePrefixes: namespacePrefixes
+        contactName: contactName
+        company: company
+        id: 0
+      properties:
+        id:
+          format: int32
+          nullable: true
+          type: integer
+        company:
+          nullable: true
+          type: string
+        namespacePrefixes:
+          nullable: true
+          type: string
+        contactName:
+          nullable: true
+          type: string
+        contactEmailAddress:
+          nullable: true
+          type: string
+      title: Vendor
+      type: object
+    _connect_register_post_request:
+      properties:
+        ClientId:
+          description: Client id
+          type: string
+        ClientSecret:
+          description: Client secret
+          type: string
+        DisplayName:
+          description: Client display name
+          type: string
+      type: object
+    _connect_token_post_request:
+      properties:
+        client_id:
+          type: 'string '
+        client_secret:
+          type: 'string '
+        grant_type:
+          type: 'string '
+        scope:
+          type: string
+      type: object
+  securitySchemes:
+    oauth:
+      flows:
+        clientCredentials:
+          scopes:
+            edfi_admin_api/full_access: Full access to the Admin API
+            edfi_admin_api/tenant_access: Access to a specific tenant
+            edfi_admin_api/worker: Worker access to the Admin API
+          tokenUrl: https://localhost:7214/connect/token
+      type: oauth2
+

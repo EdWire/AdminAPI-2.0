@@ -536,6 +536,25 @@ public static class WebApplicationBuilderExtensions
         });
     }
 
+    public static void AddAzureAppConfiguration(this WebApplicationBuilder builder, IConfigurationSection configSection)
+    {
+        builder.Configuration.AddAzureAppConfiguration(options =>
+        {
+            string connectionString = configSection.GetRequiredSection("ConnectionString").Value!;
+            options.Connect(connectionString);
+
+            string? keyFilter = configSection.GetSection("KeyFilter").Value;
+            if (!string.IsNullOrWhiteSpace(keyFilter))
+                options.Select(keyFilter);
+
+            string? sentinelKey = configSection.GetSection("SentinelKey").Value;
+            if (!string.IsNullOrWhiteSpace(sentinelKey))
+                options.ConfigureRefresh(refresh => refresh.Register(sentinelKey, refreshAll: true));
+        });
+
+        builder.Services.AddAzureAppConfiguration();
+    }
+
     private enum HttpVerbOrder
     {
         GET = 1,
