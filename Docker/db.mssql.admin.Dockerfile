@@ -5,7 +5,11 @@
 
 FROM mcr.microsoft.com/mssql/server@sha256:d7f2c670f0cd807b4dc466b8887bd2b39a4561f624c154896f5564ea38efd13a AS base
 USER root
-RUN apt-get update && apt-get install unzip -y dos2unix busybox openssl libxml2
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y unzip dos2unix busybox openssl libxml2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 LABEL maintainer="Ed-Fi Alliance, LLC and Contributors <techsupport@ed-fi.org>"
 
 ENV MSSQL_USER=${SQLSERVER_USER}
