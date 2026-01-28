@@ -7,7 +7,7 @@
 # code. The next two layers use the dotnet/aspnet image to run the built code.
 # The extra layers in the middle support caching of base layers.
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0.22-alpine AS build
 RUN apk update && \
     apk upgrade --no-cache && \
     apk add --no-cache musl && \
@@ -37,7 +37,7 @@ RUN export ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
 RUN dotnet restore && dotnet build -c Release
 RUN dotnet publish -c Release /p:EnvironmentName=$ASPNETCORE_ENVIRONMENT --no-build -o /app/EdFi.Ods.AdminApi.AdminConsole
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtimebase
+FROM mcr.microsoft.com/dotnet/aspnet:8.0.22-alpine AS runtimebase
 RUN apk upgrade --no-cache && \
     apk add --no-cache dos2unix bash gettext icu curl musl && \
     addgroup -S edfi && adduser -S edfi -G edfi
