@@ -8,10 +8,7 @@
 # The extra layers in the middle support caching of base layers.
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
-RUN apk update && \
-    apk upgrade --no-cache && \
-    apk add --no-cache musl && \
-    rm -rf /var/cache/apk/*
+RUN apk upgrade --no-cache
 
 ARG ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
@@ -39,7 +36,7 @@ RUN dotnet publish -c Release /p:EnvironmentName=$ASPNETCORE_ENVIRONMENT --no-bu
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtimebase
 RUN apk upgrade --no-cache && \
-    apk add --no-cache dos2unix bash gettext icu curl musl && \
+    apk add --no-cache bash gettext icu curl && \
     addgroup -S edfi && adduser -S edfi -G edfi
 
 FROM runtimebase AS setup
@@ -57,11 +54,12 @@ COPY --from=build /app/EdFi.Ods.AdminApi .
 COPY --chmod=500 Settings/dev/${DB_FOLDER}/run.sh /app/run.sh
 COPY Settings/dev/log4net.config /app/log4net.txt
 
-RUN cp /app/log4net.txt /app/log4net.config && \
+RUN apk add --no-cache dos2unix && \
+    cp /app/log4net.txt /app/log4net.config && \
     dos2unix /app/*.json && \
     dos2unix /app/*.sh && \
     dos2unix /app/log4net.config && \
-    chmod 500 /app/*.sh -- ** && \
+    chmod 500 /app/*.sh && \
     chown -R edfi /app && \
     wget -nv -O /tmp/msodbcsql18_18.4.1.1-1_amd64.apk https://download.microsoft.com/download/7/6/d/76de322a-d860-4894-9945-f0cc5d6a45f8/msodbcsql18_18.4.1.1-1_amd64.apk && \
     wget -nv -O /tmp/mssql-tools18_18.4.1.1-1_amd64.apk https://download.microsoft.com/download/7/6/d/76de322a-d860-4894-9945-f0cc5d6a45f8/mssql-tools18_18.4.1.1-1_amd64.apk && \
