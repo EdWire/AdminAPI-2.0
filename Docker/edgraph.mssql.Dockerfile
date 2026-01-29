@@ -35,14 +35,9 @@ RUN dotnet restore && dotnet build -c Release
 RUN dotnet publish -c Release /p:EnvironmentName=$ASPNETCORE_ENVIRONMENT --no-build -o /app/EdFi.Ods.AdminApi.AdminConsole
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtimebase
-RUN apk upgrade --no-cache \
- && apk add --no-cache \
-    bash \
-    gettext \
-    icu \
-    curl \
- && addgroup -S edfi \
- && adduser -S edfi -G edfi
+RUN apk upgrade --no-cache && \
+    apk add --no-cache bash gettext icu curl && \
+    addgroup -S edfi && adduser -S edfi -G edfi
 
 FROM runtimebase AS setup
 LABEL maintainer="Ed-Fi Alliance, LLC and Contributors <techsupport@ed-fi.org>"
