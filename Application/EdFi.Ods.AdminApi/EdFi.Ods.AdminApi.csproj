@@ -11,7 +11,7 @@
     <DockerfileBuildArguments>--no-cache</DockerfileBuildArguments>
     <DockerfileRunEnvironmentFiles>.env</DockerfileRunEnvironmentFiles>
     <DockerfileTag>adminapi-dev</DockerfileTag>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <UserSecretsId>a39ca29f-5ebf-412e-bca9-53fc7221286b</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>

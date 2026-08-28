@@ -15,4 +15,10 @@ public class AdminConsoleSqlServerUsersContext(DbContextOptions options) : SqlSe
     {
         Database.UseTransaction(transaction.GetDbTransaction());
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.RelaxOdsInstanceConnectionString();
+    }
 }

@@ -15,5 +15,10 @@ public class AdminConsolePostgresUsersContext(DbContextOptions options) : Postgr
     {
         Database.UseTransaction(transaction.GetDbTransaction());
     }
-}
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.RelaxOdsInstanceConnectionString();
+    }
+}
